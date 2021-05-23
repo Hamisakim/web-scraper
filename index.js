@@ -20,7 +20,7 @@ const scrapeProduct = async (url) => {
       const eventDetails = item.querySelector('tbody')
       const tbody = item.querySelector('tbody')
       console.log('🐝 ~ file: index.js ~ line 22 ~ eventDetails', eventDetails) //! ?? why isn't this printing anything?
-            
+
       const dataObject = {}
       for (const row of tbody.rows) {
         if (!row.querySelector('td')) continue // Skip headers.
@@ -31,18 +31,10 @@ const scrapeProduct = async (url) => {
       // return eventDetails.querySelector('td').innerText 
     }
   }))
-  //? h2 is the title of each event.  
-  //   if (item.querySelector('h2') === null){ 
-  //     return 'no h2 🔴'
-  //   } else {
-  //     return item.querySelector('h2').innerText
-  //   }
-  // }))
-  // const test = await feedHandle.$$eval('.content', (nodes) => nodes.map((n) => n.innerText))
-  
   console.log('🐝 ~ file: index.js ~ line 24 ~ arrayOfEvents 🔵 ', arrayOfEvents)
 
 
+  //? using xPath
   const [eventName] = await page.$x('//*[@id="Content"]/div[2]/div[6]/h2/a')
   const eventNameSrc = await eventName.getProperty('innerText')
   const eventNameSrcText = await eventNameSrc.jsonValue()
@@ -67,9 +59,30 @@ const scrapeProduct = async (url) => {
 }
 scrapeProduct('https://www.wegottickets.com/searchresults/adv')
 
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------
 // scrapeProduct('https://www.wegottickets.com/event/516497')
 
 // const allResults =  await page.$$eval('div > .content', content => {
 //   return content.map(content => content.textContent.replace(/<a [^>]+>[^<]*<\/a>/g, '').trim())
 // })
 // console.log('🐝 ~ file: index.js ~ line 19 ~ allResults', allResults)
+
+//? h2 is the title of each event.  
+//   if (item.querySelector('h2') === null){ 
+//     return 'no h2 🔴'
+//   } else {
+//     return item.querySelector('h2').innerText
+//   }
+// }))
+// const test = await feedHandle.$$eval('.content', (nodes) => nodes.map((n) => n.innerText))
