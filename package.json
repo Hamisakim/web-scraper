@@ -1,0 +1,11 @@
+{
+  "name": "wmg-task",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "puppeteer": "^9.1.1"
+  },
+  "serve": "npx nodemon index.js"
+}
