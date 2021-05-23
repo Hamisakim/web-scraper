@@ -7,5 +7,7 @@
   "dependencies": {
     "puppeteer": "^9.1.1"
   },
-  "serve": "npx nodemon index.js"
+  "scripts": {
+    "serve": "npx nodemon index.js"
+  }
 }

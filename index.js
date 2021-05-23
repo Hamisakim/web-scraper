@@ -4,7 +4,7 @@ import puppeteer from 'puppeteer'
 // ● the name of the venue 
 // ● the date 
 // ● the price 
-// * need to find way to use the refined results 
+// * need to find way to use the refined music only results 
 //* Need to find a way to get all the .content singular events from the #Content and loop through extracting each one
 
 const scrapeProduct = async (url) => {
@@ -13,6 +13,7 @@ const scrapeProduct = async (url) => {
   await page.goto(url)
 
   const feedHandle = await page.$('#Content')
+
   const arrayOfEvents = await feedHandle.$$eval('.content', (nodes) => nodes.map(item =>{
     if (item.querySelector('tbody') === null){ 
       return ' 🔴 '
@@ -61,15 +62,6 @@ scrapeProduct('https://www.wegottickets.com/searchresults/adv')
 
 
 
-
-
-
-
-
-
-
-
-
 // ------------------------------------------------------------------------------------
 // scrapeProduct('https://www.wegottickets.com/event/516497')
 
@@ -78,7 +70,7 @@ scrapeProduct('https://www.wegottickets.com/searchresults/adv')
 // })
 // console.log('🐝 ~ file: index.js ~ line 19 ~ allResults', allResults)
 
-//? h2 is the title of each event.  
+//? h2 is the title of each event. insert inside the map 
 //   if (item.querySelector('h2') === null){ 
 //     return 'no h2 🔴'
 //   } else {
