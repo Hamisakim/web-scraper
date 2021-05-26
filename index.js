@@ -30,15 +30,27 @@ const scrapeProduct = async (url) => {
       const tbody = item.querySelector('tbody')
       const allRows = tbody.querySelectorAll('tr')
       // console.log('🟡 ~ file: index.js ~ line 40 ~ allRows', allRows) /// so the nodeobject is array of rows now 
-      
-      const eventDetails = allRows.forEach(item=>{ //! cant map here....
-        console.log('🟢 ~ file: index.js ~ line 89 ~ item.innerText', item.innerText)
-        console.log('🟣 ~ file: index.js ~ line 89 ~ item', item)
-        return item.innerText
+      const eventDetails = []
+      allRows.forEach(item=>{ //! cant map here....
+        // console.log('🟢 ~ item.innerText', item.innerText)
+        // console.log('🟣 ~ file: index.js ~ line 89 ~ item', item)
+        eventDetails.push(item.innerText.replace(/\t/g, ''))
       })
-      console.log('🐝 ~ file: index.js ~ line 47 ~ eventDetails', eventDetails)
+      console.log('🐝 ~ file: index.js ~ line 39 ~ eventDetails', eventDetails)
 
-      const dataObject = {}
+
+
+
+      const dataObject = {
+        title: eventTitle,
+        location: eventDetails[0],
+        date: eventDetails[1],
+        time: eventDetails[2],
+        ageRestriction: eventDetails[3]
+      }
+
+
+
       //#region //? this gets the ages only 
       // for (const row of tbody.rows) {
       // console.log('🐝 ~ file: index.js ~ line 31 ~ tbody.rows', tbody.rows)
@@ -53,7 +65,9 @@ const scrapeProduct = async (url) => {
       // return eventDetails.querySelector('td').innerText 
       //#endregion
       /// return a object with dates ages etc 
-      return eventTitle
+      
+      
+      return dataObject
     }
   }))
   console.log('🐝 ~ file: index.js ~ line 35 ~ arrayOfEvents 🔵 ', arrayOfEvents)
