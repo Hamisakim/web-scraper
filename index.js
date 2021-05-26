@@ -20,31 +20,40 @@ const scrapeProduct = async (url) => {
     if (tbody === null){ 
       return '🔴 No table body data' //! change to null? //? make this throw an error on the front
     } else { 
+      // const newBrowser =  puppeteer.launch({    dumpio: true   })
+      // console.log('🐝 ~ file: index.js ~ line 24 ~ newBrowser', newBrowser)
+      
 
-      const getTicketInfo = async() =>{
-        console.log('🐝 ~ file: index.js ~ line 28 ~ eventPageLink', eventPageLink)
-        await page.goto(eventPageLink.toString())
-        const ticketsWrapper = await page.$('form')
-        console.log('🐝 ~ file: index.js ~ line 28 ~ ticketsWrapper', ticketsWrapper)
-        const arrayOfTickets = await ticketsWrapper.$$eval('.BuyBox', (nodes) => nodes.map(item =>{
-          console.log('🐝 ~ file: index.js ~ line 30 ~ ticket', item)
-
-
-
-          
-        }))
-        console.log('🐝 ~ file: index.js ~ line 46 ~ arrayOfTickets', arrayOfTickets)
-      }
-
-      getTicketInfo(eventPageLink)
-
-      /// For each .content we can go through the elements
+      // const testFn = async (params) => {
+      //   console.log(params, '🟣' )
+      //   const browser = await puppeteer.launch({    dumpio: true   })
+      //   const page = await browser.newPage()
+      //   await page.goto(url)
+      //   const ticketsWrapper = await page.$('form.full-width')
+      //   console.log('🐝 ~ file: index.js ~ line 28 ~ ticketsWrapper', ticketsWrapper)
+        
+      //   const arrayOfTickets = await ticketsWrapper.$$eval('.BuyBox', (nodes) => nodes.forEach(item =>{
+      //     console.log('🐝 ~ file: index.js ~ line 30 ~ ticket', item)
+            
+      //   }))
+      //   console.log('🐝 ~ file: index.js ~ line 46 ~ arrayOfTickets', arrayOfTickets)
+      //   await browser.close()
+      // }
+      //________________________________________________________________________________________________________________________________
       const eventTitle =  item.querySelector('h2').innerText
       const eventPageLink = item.querySelector('a').href
+      console.log('🐝 ~ file: index.js ~ line 26 ~ eventPageLink',typeof eventPageLink)
+      /// For each .content we can go through the elements
       // const eventID = eventPageLink(eventPageLink.length - 6)
       // console.log('🐝 ~ file: index.js ~ line 42 ~ eventID', eventID)
-      console.log('💜 ~ file: index.js ~ line 27 ~ eventPageLink', eventPageLink)
-
+      // getTicketInfo()
+      // try {
+      //   testFn('hi')
+        
+      // } catch (error) {
+      //   console.log('🐝 ~ file: index.js ~ line 34 ~ error', error)
+        
+      // }
       const allRows = tbody.querySelectorAll('tr')
       const eventDetails = []
     
@@ -65,9 +74,29 @@ const scrapeProduct = async (url) => {
       return dataObject
     }
   }))
+  // console.log('🐝 ~ file: index.js ~ line 35 ~ arrayOfEvents 🔵 ', arrayOfEvents)
   console.log('🐝 ~ file: index.js ~ line 35 ~ arrayOfEvents 🔵 ', arrayOfEvents[12])
 
   await browser.close()
 }
 scrapeProduct('https://www.wegottickets.com/searchresults/adv')
 
+
+
+// const getTicketInfo = async(url) =>{
+//   console.log('🟩')
+//   console.log('🐝 ~ file: index.js ~ line 28 ~ eventPageLink', url)
+//   const browser = await puppeteer.launch({    dumpio: true   })
+//   const page = await browser.newPage()
+//   await page.goto(url)
+//   const ticketsWrapper = await page.$('form.full-width')
+//   console.log('🐝 ~ file: index.js ~ line 28 ~ ticketsWrapper', ticketsWrapper)
+
+//   const arrayOfTickets = await ticketsWrapper.$$eval('.BuyBox', (nodes) => nodes.forEach(item =>{
+//     console.log('🐝 ~ file: index.js ~ line 30 ~ ticket', item)
+    
+//   }))
+//   console.log('🐝 ~ file: index.js ~ line 46 ~ arrayOfTickets', arrayOfTickets)
+//   await browser.close()
+
+// }
