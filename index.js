@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer'
 
 
 
-const scrapeProduct = async (url) => {
+const getEvents = async (url) => {
 
   const browser = await puppeteer.launch({    dumpio: true   })
   const page = await browser.newPage()
@@ -44,4 +44,4 @@ const scrapeProduct = async (url) => {
   console.log('🐝 ~ arrayOfEvents 🔵 ', arrayOfEvents)
   return arrayOfEvents
 }
-scrapeProduct('https://www.wegottickets.com/searchresults/adv')
+getEvents('https://www.wegottickets.com/searchresults/adv')
