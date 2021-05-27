@@ -9,94 +9,120 @@ import puppeteer from 'puppeteer'
 //* get elements id from url then can use that as param for requests like DB
 
 
-const scrapeProduct = async (url) => {
-  const browser = await puppeteer.launch({    dumpio: true   })
-  const page = await browser.newPage()
-  await page.goto(url)
-  const contentWrapper = await page.$('#Content')
-  //__________________________________________________________________________________________________________
-  const arrayOfEvents = await contentWrapper.$$eval('.content', (nodes) => nodes.map(item =>{
-    const tbody = item.querySelector('tbody')
-    if (tbody === null){ 
-      return '🔴 No table body data' //! change to null? //? make this throw an error on the front
-    } else { 
-      // const newBrowser =  puppeteer.launch({    dumpio: true   })
-      // console.log('🐝 ~ file: index.js ~ line 24 ~ newBrowser', newBrowser)
+
+const scrapeForEventsArray = async (url) => {
+  try {
+    const browser = await puppeteer.launch({    dumpio: true   })
+    const page = await browser.newPage()
+    await page.goto(url)
+    const contentWrapper = await page.$('#Content')
+    //__________________________________________________________________________________________________________________
+    //#region //? Alternate page.evaluate instead..
+    // return page.evaluate(() => {
+    // // get all td elements
+    //   const tdList = [...document.querySelectorAll('.content')] 
+    //   return tdList.map(item =>{
+    //     const tbody = item.querySelector('tbody')
+    //     console.log('🐝 ~ file: index.js ~ line 28 ~ tbody', tbody)
+    //     if (tbody === null){ 
+    //       return '🔴 No table body data' //! change to null? //? make this throw an error on the front
+    //     } else { 
+       
+    //       //________________________________________________________________________________________________________________________________
+    //       const eventTitle =  item.querySelector('h2').innerText
+    //       console.log('🐝 ~ file: index.js ~ line 35 ~ eventTitle', eventTitle)
+    //       const eventPageLink = item.querySelector('a').href
+    //       /// For each .content we can go through the elements
+  
+    //       const allRows = tbody.querySelectorAll('tr')
+    //       const eventDetails = []
       
-
-      // const testFn = async (params) => {
-      //   console.log(params, '🟣' )
-      //   const browser = await puppeteer.launch({    dumpio: true   })
-      //   const page = await browser.newPage()
-      //   await page.goto(url)
-      //   const ticketsWrapper = await page.$('form.full-width')
-      //   console.log('🐝 ~ file: index.js ~ line 28 ~ ticketsWrapper', ticketsWrapper)
-        
-      //   const arrayOfTickets = await ticketsWrapper.$$eval('.BuyBox', (nodes) => nodes.forEach(item =>{
-      //     console.log('🐝 ~ file: index.js ~ line 30 ~ ticket', item)
+    //       allRows.forEach(item=>{
+    //         const eventDetail = item.innerText.replace(/\t/g, '')
+    //         eventDetails.push(eventDetail)
+    //       })
+  
+    //       const dataObject = {
+    //         title: eventTitle,
+    //         location: eventDetails[0],
+    //         date: eventDetails[1],
+    //         time: eventDetails[2],
+    //         ageRestriction: eventDetails[3],
+    //         eventPageURL: eventPageLink
+    //       }
+    //       // return JSON.stringify(dataObject) //* FOR JSON 
+    //       events.push(dataObject)
+    //       return dataObject
+    //     }
+    //   })
+    // })
+    //#endregion
+    
+    //__________________________________________________________________________________________________________________
+    const arrayOfEvents = await contentWrapper.$$eval('.content', (nodes) => nodes.map(item =>{
+      const tbody = item.querySelector('tbody')
+      if (tbody === null){ 
+        return '🔴 No table body data' //! change to null? //? make this throw an error on the front
+      } else { 
+        const eventTitle =  item.querySelector('h2').innerText
+        const eventPageLink = item.querySelector('a').href
+        /// For each .content we can go through the elements
+          
+        const allRows = tbody.querySelectorAll('tr')
+        const eventDetails = []
+          
+        allRows.forEach(item=>{
+          const eventDetail = item.innerText.replace(/\t/g, '')
+          eventDetails.push(eventDetail)
+        })
             
-      //   }))
-      //   console.log('🐝 ~ file: index.js ~ line 46 ~ arrayOfTickets', arrayOfTickets)
-      //   await browser.close()
-      // }
-      //________________________________________________________________________________________________________________________________
-      const eventTitle =  item.querySelector('h2').innerText
-      const eventPageLink = item.querySelector('a').href
-      console.log('🐝 ~ file: index.js ~ line 26 ~ eventPageLink',typeof eventPageLink)
-      /// For each .content we can go through the elements
-      // const eventID = eventPageLink(eventPageLink.length - 6)
-      // console.log('🐝 ~ file: index.js ~ line 42 ~ eventID', eventID)
-      // getTicketInfo()
-      // try {
-      //   testFn('hi')
-        
-      // } catch (error) {
-      //   console.log('🐝 ~ file: index.js ~ line 34 ~ error', error)
-        
-      // }
-      const allRows = tbody.querySelectorAll('tr')
-      const eventDetails = []
-    
-      allRows.forEach(item=>{
-        const eventDetail = item.innerText.replace(/\t/g, '')
-        eventDetails.push(eventDetail)
-      })
-
-      const dataObject = {
-        title: eventTitle,
-        location: eventDetails[0],
-        date: eventDetails[1],
-        time: eventDetails[2],
-        ageRestriction: eventDetails[3],
-        eventPageURL: eventPageLink
+        const dataObject = {
+          title: eventTitle,
+          location: eventDetails[0],
+          date: eventDetails[1],
+          time: eventDetails[2],
+          ageRestriction: eventDetails[3],
+          eventPageURL: eventPageLink
+        }
+        // return JSON.stringify(dataObject) //* FOR JSON 
+        return dataObject
       }
-      // return JSON.stringify(dataObject) //* FOR JSON 
-      return dataObject
-    }
-  }))
-  // console.log('🐝 ~ file: index.js ~ line 35 ~ arrayOfEvents 🔵 ', arrayOfEvents)
-  console.log('🐝 ~ file: index.js ~ line 35 ~ arrayOfEvents 🔵 ', arrayOfEvents[12])
-
-  await browser.close()
+    }))
+    await browser.close()
+    arrayOfEvents.shift()
+    // return arrayOfEvents[12]
+    return arrayOfEvents //!FOR FULL ARRAY
+  } catch (error) {
+    console.log('🟥',error)
+  }
 }
-scrapeProduct('https://www.wegottickets.com/searchresults/adv')
+// scrapeProduct('https://www.wegottickets.com/searchresults/adv')
+            
+const getArray = async () => {
+  const response = await scrapeForEventsArray('https://www.wegottickets.com/searchresults/adv')
+  console.log('🟩',response)
+  return response
+}
+getArray()
+
+//todo map through each item and run the function to get ticket pricing from page url
+
+
+const getTicketInfo = async (url = 'https://www.wegottickets.com/event/515342') => {
+  try {
+    const browser = await puppeteer.launch({    dumpio: true   })
+    const page = await browser.newPage()
+    await page.goto(url)
 
 
 
-// const getTicketInfo = async(url) =>{
-//   console.log('🟩')
-//   console.log('🐝 ~ file: index.js ~ line 28 ~ eventPageLink', url)
-//   const browser = await puppeteer.launch({    dumpio: true   })
-//   const page = await browser.newPage()
-//   await page.goto(url)
-//   const ticketsWrapper = await page.$('form.full-width')
-//   console.log('🐝 ~ file: index.js ~ line 28 ~ ticketsWrapper', ticketsWrapper)
 
-//   const arrayOfTickets = await ticketsWrapper.$$eval('.BuyBox', (nodes) => nodes.forEach(item =>{
-//     console.log('🐝 ~ file: index.js ~ line 30 ~ ticket', item)
-    
-//   }))
-//   console.log('🐝 ~ file: index.js ~ line 46 ~ arrayOfTickets', arrayOfTickets)
-//   await browser.close()
+  } catch (error) {
+    console.log('🟥🟥', error)
+  
+  }
 
-// }
+
+
+}
+getTicketInfo()
