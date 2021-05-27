@@ -118,30 +118,27 @@ const getTicketInfo = async (url = 'https://www.wegottickets.com/event/515342') 
           return '🔴 No data ticket' //! change to null? //? make this throw an error for the front
         } else { 
           const price = item.querySelector('.price').innerText
+          console.log('🟢 price', price)
           const warning = item.querySelector('.warning').innerText
           console.log('🟢 warning', warning)
-          console.log('🟢 price', price)
           const ticketDetail = item.querySelector('h2').innerText
-          console.log('🐝 ~ file: index.js ~ line 127 ~ ticketDetail', ticketDetail)
+          console.log('🟢 ticketDetail', ticketDetail)
 
           const ticketObject = {
             price,
             warning,
             ticketDetail
           }
-          console.log('🐝 ~ file: index.js ~ line 128 ~ ticketObject', ticketObject)
-
-
+          return ticketObject
         }
       }))
     await browser.close()
+    console.log('🐝 ~ file: index.js ~ line 147 ~ arrayOfTickets', arrayOfTickets)
 
   } catch (error) {
     console.log('🟥🟥', error)
-  
   }
-
-
-
 }
+
+
 getTicketInfo()
