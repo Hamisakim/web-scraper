@@ -97,7 +97,7 @@ const scrapeForEventsArray = async (url) => {
             
 const getArray = async () => {
   const response = await scrapeForEventsArray('https://www.wegottickets.com/searchresults/adv')
-  // console.log('🟩 array of event objects 🟩',response)
+  console.log('🟩 array of event objects 🟩',response) 
   return response
 }
 getArray()
